@@ -1,28 +1,28 @@
-import express from 'express'
-import { createServer } from 'http'
-import { WebSocketServer } from 'ws'
+import { createServer } from 'http';
+import { WebSocketServer } from 'ws';
+import express from 'express';
 
-const app = express()
+const app = express();
 
-function onSocketError (err) {
-  console.error(err)
+function onSocketError(err: any) {
+  console.error(err);
 }
 
-const server = createServer(app)
-const wss = new WebSocketServer({ noServer: true })
+const server = createServer(app);
+const wss = new WebSocketServer({ noServer: true });
 
-wss.on('connection', function connection (ws, request, client) {
-  ws.on('error', console.error)
+wss.on('connection', function connection(ws: { on: (arg0: string, arg1: { (...data: any[]): void; (message?: any, ...optionalParams: any[]): void; (data: any): void; }) => void; }, request: any, client: any) {
+  ws.on('error', console.error);
 
-  ws.on('message', function message (data) {
-    console.log(`Received message ${data} from user ${client}`)
-  })
-})
+  ws.on('message', function message(data: any) {
+    console.log(`Received message ${data} from user ${client}`);
+  });
+});
 
-server.on('upgrade', function upgrade (request, socket, head) {
-  socket.on('error', onSocketError)
+server.on('upgrade', function upgrade(request, socket, head) {
+  socket.on('error', onSocketError);
+  // TODO: authenticate token and get user id and use for socket id
 
-  // Authenticate by decoding id token from request
-})
+});
 
-server.listen(8080)
+server.listen(8080);
