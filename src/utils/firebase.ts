@@ -1,7 +1,11 @@
-import { initializeApp } from "firebase-admin/app";
+import { applicationDefault, initializeApp } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
+import { getAuth } from "firebase-admin/auth";
 
-const app = initializeApp();
+const app = initializeApp({
+    credential: applicationDefault(),
+    projectId: "truenation-dev"
+});
 
 console.log("Firebase Admin SDK initialized", app.name);
 
@@ -9,4 +13,10 @@ const firestore = getFirestore(app);
 
 console.log("Firestore initialized");
 
-export { app, firestore };
+const auth = getAuth(app)
+
+console.debug("Auth initialized");
+
+const getIdFromToken = async (token: string) => auth?.verifyIdToken(token)
+
+export { app, firestore, getIdFromToken };
