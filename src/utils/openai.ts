@@ -23,6 +23,6 @@ const sendMessages = (
       stream: true,
       ...config,
     })
-    .then((res) => res?.data?.choices[0]?.message?.content);
+    .then((res) => res?.data);
 
 export { sendMessages };

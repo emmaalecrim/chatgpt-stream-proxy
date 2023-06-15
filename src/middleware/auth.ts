@@ -9,8 +9,7 @@ export const authenticate = async (req: Request, next: NextFunction) => {
         const client = await getIdFromToken(token);
         return next(client)
     } catch (e: any) {
-        console.log("Auth error:", e.message);
-
+        console.log("Auth middleware error:", e.message);
         return next(null)
     }
 }
