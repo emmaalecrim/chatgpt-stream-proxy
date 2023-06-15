@@ -22,7 +22,4 @@ steps:
 - name: node
   entrypoint: yarn
   args: ['run', 'build']
-- name: node
-  entrypoint: yarn
-  args: ['run', 'start']
 # [END cloudbuild_yarn_node]

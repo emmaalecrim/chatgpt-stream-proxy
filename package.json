@@ -11,7 +11,9 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "dev": "nodemon ./src/index.ts",
-    "start": "node ./lib/index.js"
+    "start": "node ./lib/index.js",
+    "deploy": "gcloud builds submit --config cloudbuild.yaml"
+    
   },
   "dependencies": {
     "express": "^4.18.2",
