@@ -17,13 +17,12 @@ const sendMessages = (
   config: messageConfig = {},
   model: string = "gpt-3.5-turbo"
 ) =>
-  openai
-    .createChatCompletion({
-      model,
-      messages,
-      stream: true,
-      ...config,
-    })
+  openai.createChatCompletion({
+    model,
+    messages,
+    stream: true,
+    ...config,
+  }, { responseType: "stream" })
     .then((res) => res?.data);
 
 export { sendMessages };

@@ -1,5 +1,5 @@
 import { WebSocket } from "ws";
-import { Configuration, OpenAIApi } from "openai";
+import { sendMessages } from "../utils/openai";
 import 'dotenv/config'
 
 import getMessages from "../utils/prompts/helpers";
@@ -9,20 +9,10 @@ const decoder = new TextDecoder("utf-8")
 const ChatCompletionController = async (ws: WebSocket, parsedData: any) => {
     try {
         const { data, type } = parsedData
-        const { messages } = getMessages(type, data)
-        // TOOD: move to config file
-        const configuration = new Configuration({
-            apiKey: process.env.OPENAI_API_KEY
-        });
-        const openai = new OpenAIApi(configuration);
-        const stream = await openai.createChatCompletion({
-            model: "gpt-3.5-turbo",
-            // @ts-ignore - not sure why this is throwing an error
-            messages,
-            stream: true,
-        }, { responseType: "stream" })
+        const { messages, config } = getMessages(type, data)
+        const stream = await sendMessages(messages, config)
         // @ts-expect-error - typing bs
-        for await (const chunk of stream.data) {
+        for await (const chunk of stream) {
             decoder.decode(chunk).trim().split('data: ')
                 .filter((dataStr) => !!dataStr) // remove empty strings
                 .filter((dataStr) => !!!dataStr.includes('[DONE]')) // remove done messages
