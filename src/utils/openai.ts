@@ -1,4 +1,5 @@
 import { Configuration, OpenAIApi } from "openai";
+import 'dotenv/config'
 
 // TOOD: move to config file
 const configuration = new Configuration({

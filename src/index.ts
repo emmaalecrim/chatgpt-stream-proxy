@@ -3,6 +3,7 @@ import { WebSocketServer, RawData } from 'ws';
 import { createServer } from 'http';
 import ChatCompletuionController from './controllers/ChatCompletionController';
 import { authenticate } from './middleware/auth';
+import 'dotenv/config'
 
 const app = express()
 const server = createServer(app)
@@ -21,7 +22,7 @@ server.on('upgrade', function upgrade(request: Request, socket, head) {
   socket.on('error', onSocketError);
 
   authenticate(request, function next(client: any) {
-    if (!client) {
+    if (!client && !!!process.env.DISABLE_AUTH) {
       socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
       socket.destroy();
       return;
