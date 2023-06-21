@@ -12,7 +12,8 @@
     "build:watch": "tsc --watch",
     "dev": "nodemon ./src/index.ts",
     "start": "node ./lib/index.js",
-    "deploy": "gcloud builds submit --region=global"
+    "deploy": "gcloud builds submit --region=global",
+    "auth:refresh": "firebase login --reauth"
     
   },
   "dependencies": {
