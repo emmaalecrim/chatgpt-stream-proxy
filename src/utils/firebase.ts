@@ -4,7 +4,6 @@ import { getAuth } from "firebase-admin/auth";
 
 const app = initializeApp({
     credential: applicationDefault(),
-    projectId: "truenation-dev"
 });
 
 console.log("Firebase Admin SDK initialized", app.name);

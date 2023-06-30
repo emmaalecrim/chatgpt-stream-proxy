@@ -51,6 +51,7 @@ wss.on('connection', function connection(ws) {
         if (data.toString() === "ping") ws.send("pong")
         else {
           var parsedData = JSON.parse(data.toString())
+          console.debug('parsedData', parsedData)
           ChatCompletionController(ws, parsedData)
         }
       }
@@ -61,7 +62,10 @@ wss.on('connection', function connection(ws) {
     }
   });
 
-  ws.on('error', e => console.log(e));
+  ws.on('error', e => {
+    console.error(e)
+    ws.send(Buffer.from(JSON.stringify({ error: e.message })))
+  });
 });
 
 

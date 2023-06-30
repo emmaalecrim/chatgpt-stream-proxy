@@ -2,6 +2,7 @@ import { WebSocket } from "ws";
 import { sendMessages } from "../utils/openai";
 import 'dotenv/config'
 import getMessages from "../utils/prompts/helpers";
+import { CreateChatCompletionResponse } from "openai";
 
 // const decoder = new TextDecoder("utf-8")
 
@@ -9,13 +10,17 @@ const ChatCompletionController = async (ws: WebSocket, parsedData: any) => {
     try {
         const { data, type } = parsedData
         const { messages, config } = getMessages(type, data)
-        const stream = await sendMessages(messages, config)
-        // @ts-expect-error - typing bs
+        console.debug('Starting chat completion')
+        const stream: CreateChatCompletionResponse = await sendMessages(messages, config)
+        // @ts-expect-error - missing type
         for await (const chunk of stream) {
-            ws.send(chunk)
+            ws.send(Buffer.from(chunk))
+            console.debug('Sending chunk:\n ', chunk.toString())
         }
+        console.debug('Chat completion finished')
     } catch (e: any) {
-        ws.send(JSON.stringify({ error: e.message }))
+        console.error(e)
+        ws.send(Buffer.from(JSON.stringify({ error: e.message }), "utf-8"))
     }
 }
 
